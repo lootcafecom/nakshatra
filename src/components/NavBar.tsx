@@ -1,6 +1,20 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+
+const NAV_LINKS = [
+  { href: "/", label: "Home" },
+  { href: "/readings/vedic", label: "Vedic chart" },
+  { href: "/readings/numerology", label: "Numerology" },
+  { href: "/readings/tarot", label: "Tarot" },
+  { href: "/readings/vastu", label: "Vastu" },
+  { href: "/pricing", label: "Pricing" },
+];
 
 export default function NavBar() {
+  const pathname = usePathname();
+
   return (
     <header
       className="flex items-center justify-between px-6 sm:px-10 py-4 relative z-20"
@@ -34,27 +48,28 @@ export default function NavBar() {
       </Link>
 
       <nav
-        className="hidden lg:flex items-center gap-8 text-[13.5px]"
+        className="hidden lg:flex items-center gap-7 text-[13.5px]"
         style={{ color: "var(--ch-text-secondary)" }}
       >
-        <Link href="/" className="relative pb-1" style={{ color: "var(--ch-gold-400)" }}>
-          Home
-          <span
-            className="absolute left-0 right-0 -bottom-[17px] h-[2px]"
-            style={{ background: "var(--ch-gold-400)" }}
-          />
-        </Link>
-        <Link href="/about" className="hover:text-white transition-colors">About</Link>
-        <Link href="/horoscope" className="hover:text-white transition-colors">Horoscope</Link>
-        <Link href="/services" className="hover:text-white transition-colors">Services</Link>
-        <span className="flex items-center gap-1 hover:text-white transition-colors cursor-pointer">
-          Pages
-          <svg width="9" height="6" viewBox="0 0 9 6" fill="none">
-            <path d="M1 1L4.5 5L8 1" stroke="currentColor" strokeWidth="1.3" />
-          </svg>
-        </span>
-        <Link href="/blog" className="hover:text-white transition-colors">Blog</Link>
-        <Link href="/contact" className="hover:text-white transition-colors">Contact</Link>
+        {NAV_LINKS.map((link) => {
+          const active = pathname === link.href;
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="relative pb-1 transition-colors"
+              style={{ color: active ? "var(--ch-gold-400)" : undefined }}
+            >
+              {link.label}
+              {active && (
+                <span
+                  className="absolute left-0 right-0 -bottom-[17px] h-[2px]"
+                  style={{ background: "var(--ch-gold-400)" }}
+                />
+              )}
+            </Link>
+          );
+        })}
       </nav>
 
       <div className="flex items-center gap-4">
@@ -80,6 +95,30 @@ export default function NavBar() {
           </svg>
         </button>
       </div>
+
+      {/* mobile nav: simple horizontal scroll row below the header */}
+      <nav
+        className="lg:hidden absolute left-0 right-0 top-full flex items-center gap-5 overflow-x-auto px-6 py-2.5 text-[12.5px]"
+        style={{
+          background: "var(--ch-deep)",
+          borderBottom: "1px solid var(--ch-border)",
+          color: "var(--ch-text-secondary)",
+        }}
+      >
+        {NAV_LINKS.map((link) => {
+          const active = pathname === link.href;
+          return (
+            <Link
+              key={link.href}
+              href={link.href}
+              className="whitespace-nowrap flex-shrink-0"
+              style={{ color: active ? "var(--ch-gold-400)" : undefined }}
+            >
+              {link.label}
+            </Link>
+          );
+        })}
+      </nav>
     </header>
   );
 }

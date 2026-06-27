@@ -1,13 +1,26 @@
-const QUICK_LINKS = ["Home", "About Us", "Horoscope", "Services", "Blog", "Contact Us"];
-const OUR_SERVICES = [
-  "Personalized Horoscope",
-  "Love & Relationship",
-  "Career Guidance",
-  "Numerology Reading",
-  "Tarot Reading",
-  "Birth Chart Analysis",
+import Link from "next/link";
+
+const QUICK_LINKS = [
+  { label: "Home", href: "/" },
+  { label: "Vedic chart", href: "/readings/vedic" },
+  { label: "Numerology", href: "/readings/numerology" },
+  { label: "Tarot", href: "/readings/tarot" },
+  { label: "Vastu", href: "/readings/vastu" },
+  { label: "Pricing", href: "/pricing" },
 ];
-const SUPPORT = ["FAQ", "Privacy Policy", "Terms & Conditions", "Refund Policy", "Contact Support"];
+const OUR_SERVICES = [
+  { label: "Vedic chart reading", href: "/readings/vedic" },
+  { label: "Numerology reading", href: "/readings/numerology" },
+  { label: "Tarot reading", href: "/readings/tarot" },
+  { label: "Vastu guidance", href: "/readings/vastu" },
+];
+const SUPPORT = [
+  { label: "FAQ", href: "#" },
+  { label: "Privacy Policy", href: "#" },
+  { label: "Terms & Conditions", href: "#" },
+  { label: "Refund Policy", href: "#" },
+  { label: "Contact Support", href: "#" },
+];
 
 export default function Footer() {
   return (
@@ -71,7 +84,12 @@ export default function Footer() {
   );
 }
 
-function FooterColumn({ title, items }: { title: string; items: string[] }) {
+interface FooterLink {
+  label: string;
+  href: string;
+}
+
+function FooterColumn({ title, items }: { title: string; items: FooterLink[] }) {
   return (
     <div>
       <div
@@ -82,10 +100,14 @@ function FooterColumn({ title, items }: { title: string; items: string[] }) {
       </div>
       <ul className="space-y-2.5">
         {items.map((item) => (
-          <li key={item}>
-            <a href="#" className="text-[12.5px] hover:text-white transition-colors" style={{ color: "var(--ch-text-muted)" }}>
-              {item}
-            </a>
+          <li key={item.label}>
+            <Link
+              href={item.href}
+              className="text-[12.5px] hover:text-white transition-colors"
+              style={{ color: "var(--ch-text-muted)" }}
+            >
+              {item.label}
+            </Link>
           </li>
         ))}
       </ul>
