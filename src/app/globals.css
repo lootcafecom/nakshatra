@@ -1,0 +1,179 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600&family=Inter:wght@400;500;600&family=Cormorant:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&display=swap');
+@import "tailwindcss";
+
+/* ============================================================
+   COSMIC HORIZON — design tokens
+   Deep indigo cosmic theme. Gold serif headings, glass cards.
+   ============================================================ */
+
+:root {
+  /* base cosmic palette */
+  --ch-void: #0a0820;
+  --ch-deep: #100c2e;
+  --ch-nebula: #1f1850;
+  --ch-nebula-2: #2a2456;
+
+  /* gold accent ramp */
+  --ch-gold-50: #fdf6e3;
+  --ch-gold-200: #f0d99a;
+  --ch-gold-400: #e0bd6a;
+  --ch-gold-600: #c9a14a;
+  --ch-gold-800: #8a6a1f;
+
+  /* lavender / text ramp on dark */
+  --ch-text-primary: #f0ecff;
+  --ch-text-secondary: #c9bfe8;
+  --ch-text-muted: #9b8fc7;
+  --ch-text-faint: #6a5fa0;
+
+  /* glass surfaces */
+  --ch-glass: rgba(255, 255, 255, 0.035);
+  --ch-glass-strong: rgba(255, 255, 255, 0.06);
+  --ch-border: rgba(180, 160, 255, 0.18);
+  --ch-border-strong: rgba(180, 160, 255, 0.32);
+
+  /* semantic */
+  --ch-success: #9fd6a8;
+  --ch-danger: #e89a9a;
+  --ch-info: #9fd6f0;
+
+  /* radii / spacing */
+  --ch-radius-sm: 8px;
+  --ch-radius-md: 14px;
+  --ch-radius-lg: 20px;
+
+  /* fonts */
+  --font-display: 'Cinzel', Georgia, serif;
+  --font-body: 'Inter', system-ui, -apple-system, sans-serif;
+  --font-voice: 'Cormorant', Georgia, serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  background: var(--ch-void);
+}
+
+body {
+  background: var(--ch-void);
+  color: var(--ch-text-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  margin: 0;
+}
+
+/* shared cosmic background layer used on every page */
+.ch-cosmic-bg {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(ellipse 80% 50% at 15% -10%, rgba(58, 47, 110, 0.55) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 90% 10%, rgba(42, 63, 110, 0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(40, 30, 80, 0.4) 0%, transparent 60%),
+    linear-gradient(180deg, var(--ch-deep) 0%, var(--ch-void) 55%, #07051a 100%);
+}
+
+.ch-glass {
+  background: var(--ch-glass);
+  border: 1px solid var(--ch-border);
+  border-radius: var(--ch-radius-md);
+  backdrop-filter: blur(2px);
+}
+
+.ch-glass-strong {
+  background: var(--ch-glass-strong);
+  border: 1px solid var(--ch-border-strong);
+  border-radius: var(--ch-radius-md);
+}
+
+.ch-heading {
+  font-family: var(--font-display);
+  color: var(--ch-gold-200);
+  letter-spacing: 0.02em;
+}
+
+.ch-gold-text {
+  background: linear-gradient(135deg, var(--ch-gold-400), var(--ch-gold-200) 50%, var(--ch-gold-600));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.ch-btn-primary {
+  background: linear-gradient(135deg, var(--ch-gold-400), var(--ch-gold-600));
+  color: #241a05;
+  font-weight: 600;
+  border-radius: var(--ch-radius-sm);
+  transition: filter 0.2s ease, transform 0.15s ease;
+}
+.ch-btn-primary:hover {
+  filter: brightness(1.08);
+}
+.ch-btn-primary:active {
+  transform: scale(0.98);
+}
+
+.ch-btn-secondary {
+  background: var(--ch-glass);
+  border: 1px solid var(--ch-border-strong);
+  color: var(--ch-text-primary);
+  border-radius: var(--ch-radius-sm);
+  transition: background 0.2s ease, transform 0.15s ease;
+}
+.ch-btn-secondary:hover {
+  background: var(--ch-glass-strong);
+}
+.ch-btn-secondary:active {
+  transform: scale(0.98);
+}
+
+.ch-input {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid var(--ch-border);
+  border-radius: 8px;
+  color: var(--ch-text-primary);
+  font-family: var(--font-body);
+  transition: border-color 0.2s ease;
+}
+.ch-input:focus {
+  outline: none;
+  border-color: var(--ch-gold-400);
+}
+.ch-input::placeholder {
+  color: var(--ch-text-faint);
+}
+
+.ch-divider {
+  border-top: 1px solid var(--ch-border);
+}
+
+@keyframes ch-fade-up {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.ch-fade-up {
+  animation: ch-fade-up 0.5s ease both;
+}
+
+@keyframes ch-twinkle {
+  0%, 100% { opacity: 0.3; }
+  50% { opacity: 1; }
+}
+.ch-star {
+  animation: ch-twinkle 4s ease-in-out infinite;
+}
+
+::selection {
+  background: var(--ch-gold-600);
+  color: #1a1530;
+}
+
+/* respect reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .ch-fade-up, .ch-star {
+    animation: none !important;
+  }
+}
