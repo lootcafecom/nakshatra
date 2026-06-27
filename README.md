@@ -1,89 +1,93 @@
-# Nakshatra — AstroLuxe theme build
+# Nakshatra — full build (frontend + backend connected)
 
-This is the real, working frontend rebuilt to match the AstroLuxe reference
-design exactly — purple/violet cosmic palette, gold accents, full landing
-page with every section. It's a Next.js + TypeScript + Tailwind project you
-can run on your own machine right now.
+The AstroLuxe-themed landing page, plus all four reading types fully wired
+to a real calculation backend. This is the actual product working
+end-to-end, not a mockup.
 
-## What's actually built
+## What's real and working
 
-Every section from the reference image, as real working components:
-
-- **Nav bar** — logo, links, search icon, pill-shaped "Sign In" button
-- **Hero** — headline, trust badges (100% Accurate / AI Powered / Secure),
-  a quick-search form (sign / date / time / Get My Horoscope), and an
-  original SVG zodiac wheel illustration (concentric gold rings, 12 glyphs,
-  glowing compass star center — not a stock image, so it's license-clean)
-- **Premium Services** — 6 service cards with hand-built SVG icons
-- **Zodiac strip** — all 12 signs with date ranges, "View All Signs" CTA
-- **Why Choose AstroLuxe** — 4 stat cards (users, accuracy, astrologers, years)
-- **Today's Horoscope** — Leo example card with love/career/health meters
-- **Testimonials** — 3-card carousel with working prev/next and dot navigation
-- **Astrology Insights & Blogs** — 4 post cards with gradient art placeholders
-- **Newsletter banner** — email capture form
-- **Footer** — 4 link columns, social icons, contact row, copyright bar
-
-## What's intentionally NOT built yet
-
-- No Swiss Ephemeris calculation — the hero form captures input but doesn't
-  calculate a real chart yet
-- No Claude API connection — no AI interpretation yet
-- No payments, no auth, no database
-- Blog post content, testimonials, and stats are placeholder copy — swap in
-  real content whenever you have it
+- **Landing page** — full AstroLuxe design: hero with zodiac wheel,
+  services, zodiac strip, testimonials, blog, newsletter, footer.
+- **Vedic chart reading** (`/readings/vedic`) — real Swiss Ephemeris
+  calculation (Lahiri ayanamsha), a chart wheel rendered from the actual
+  calculated houses and planets, full planetary position table, and an
+  AI interpretation grounded in that exact data.
+- **Numerology reading** (`/readings/numerology`) — real Pythagorean
+  numerology with every reduction step shown, plus AI interpretation.
+- **Tarot reading** (`/readings/tarot`) — genuine random draw from the
+  full 78-card deck, rendered as original card art, plus AI interpretation.
+- **Vastu reading** (`/readings/vastu`) — geocodes the person's city and
+  looks up true magnetic declination there, so directional guidance is
+  anchored to real coordinates (needs live internet to reach Nominatim
+  and NOAA — see backend README).
+- **Mandatory language selector** on every reading — 9 languages,
+  Sanskrit terms preserved regardless of language chosen.
 
 ## Running it locally
 
+You need **both** the backend and frontend running.
+
 ```bash
+# Terminal 1 — backend
+cd backend
+pip install -r requirements.txt
+cp .env.example .env   # add your ANTHROPIC_API_KEY
+uvicorn app.main:app --reload --port 8000
+
+# Terminal 2 — frontend
 cd frontend
 npm install
 npm run dev
 ```
 
-Then open `http://localhost:3000`.
+Open `http://localhost:3000`.
+
+Without `ANTHROPIC_API_KEY` set, every reading still calculates and
+displays its real data correctly — only the written interpretation will
+show a clear "not available" message instead of AI text. This was
+verified directly during the build.
 
 ## Project structure
 
 ```
-frontend/src/
+backend/
   app/
-    page.tsx                    — home page, assembles every section in order
-    layout.tsx                  — root layout, fonts, cosmic background
-    globals.css                 — AstroLuxe design tokens (purple/gold palette)
-    pricing/page.tsx
-    readings/{vedic,numerology,tarot,vastu}/page.tsx
-  components/
-    NavBar.tsx
-    HeroSection.tsx              — assembles headline + badges + form + wheel
-    HeroSearchForm.tsx           — sign/date/time quick search
-    ZodiacWheelHero.tsx          — original SVG zodiac wheel illustration
-    TrustBadges.tsx
-    ServicesSection.tsx          — 6 service cards
-    ZodiacStrip.tsx              — 12-sign row
-    WhyChooseAndHoroscope.tsx    — stats panel + today's horoscope panel
-    TestimonialsSection.tsx      — working carousel
-    BlogSection.tsx              — 4 insight cards
-    NewsletterBanner.tsx
-    Footer.tsx
-    BirthForm.tsx, ChartWheel.tsx, LanguageSelector.tsx — from Week 1,
-      still used on the /readings pages
-  lib/
-    zodiac.ts                    — the 12 signs, symbols, date ranges
-    languages.ts                 — the 9-language priority list
+    vedic.py            — Swiss Ephemeris birth chart calculation
+    numerology.py        — Pythagorean numerology, visible reduction steps
+    tarot.py              — 78-card deck, randomized draw
+    vastu.py              — geocoding + magnetic declination
+    interpretation.py     — AI prompts (calculation data in, explanation out)
+    main.py                — FastAPI app, four reading endpoints
+    tests/test_engines.py  — 21 tests, all passing
+  requirements.txt
+  README.md
+
+frontend/
+  src/
+    app/
+      page.tsx                          — AstroLuxe home page
+      readings/{vedic,numerology,tarot,vastu}/page.tsx  — connected reading pages
+      pricing/page.tsx
+    components/                         — all UI pieces (nav, hero, cards, etc.)
+    lib/
+      api.ts             — typed client for the backend
+      cities.ts           — known-city coordinate lookup for the birth form
+      languages.ts, zodiac.ts
 ```
 
-## A note on fonts and screenshots
+## Known limitations in this build
 
-The theme uses Cinzel (display), Inter (body), and Cormorant (voice/serif),
-loaded via `@import` in `globals.css`. This build sandbox couldn't reach
-Google Fonts or run a real browser to capture a pixel screenshot, so this
-was verified by checking the generated HTML and CSS output directly rather
-than a visual screenshot. It will render exactly as designed on Vercel,
-your own machine, or any standard host.
+- **City lookup is a fixed list** (`lib/cities.ts`), not live geocoding —
+  this sandbox's network couldn't reach Nominatim to test a live lookup
+  for the Vedic/numerology forms. Swap in a real geocoding call (the
+  pattern is already written in `backend/app/vastu.py`) when you deploy
+  somewhere with normal internet access.
+- **No database** — nothing is saved between requests yet (Week 3-4).
+- **No payments or auth yet** (Week 3-4 per the master plan).
 
-## Next step
+## Next steps
 
-Connect the Python/Swiss Ephemeris calculation microservice so the hero
-form and reading pages produce a real, accurate chart — then wire one
-reading type to the Anthropic API for live interpretation.
-
+Per the master plan: persistence (save a profile once, read it on every
+future visit), payments (one-time + subscription), and the daily
+horoscope / Kundli matching / Muhurta features from the post-launch
+priority list.

@@ -3,6 +3,7 @@
 import { useState } from "react";
 import LanguageSelector from "./LanguageSelector";
 import { DEFAULT_LANGUAGE } from "@/lib/languages";
+import { KNOWN_CITIES, findCity } from "@/lib/cities";
 
 export interface BirthData {
   name: string;
@@ -44,7 +45,11 @@ export default function BirthForm({
     if (!data.name.trim()) next.name = "Enter your full name.";
     if (!data.dob) next.dob = "Enter your date of birth.";
     if (!data.tob) next.tob = "Enter your time of birth.";
-    if (!data.place.trim()) next.place = "Enter your city of birth.";
+    if (!data.place.trim()) {
+      next.place = "Enter your city of birth.";
+    } else if (!findCity(data.place)) {
+      next.place = "Choose a city from the list so we can use its exact coordinates.";
+    }
     setErrors(next);
     return Object.keys(next).length === 0;
   }
@@ -80,8 +85,14 @@ export default function BirthForm({
             value={data.place}
             onChange={(e) => update("place", e.target.value)}
             placeholder="e.g. Mumbai, India"
+            list="known-cities"
             className="ch-input w-full px-3 py-2.5 text-[14px]"
           />
+          <datalist id="known-cities">
+            {KNOWN_CITIES.map((c) => (
+              <option key={c.name} value={c.name} />
+            ))}
+          </datalist>
         </Field>
 
         <Field label="Date of birth" error={errors.dob}>
