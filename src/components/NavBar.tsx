@@ -9,6 +9,7 @@ const NAV_LINKS = [
   { href: "/readings/numerology", label: "Numerology" },
   { href: "/readings/tarot", label: "Tarot" },
   { href: "/readings/vastu", label: "Vastu" },
+  { href: "/readings/matching", label: "Matching" },
   { href: "/pricing", label: "Pricing" },
 ];
 

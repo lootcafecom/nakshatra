@@ -6,6 +6,7 @@ const QUICK_LINKS = [
   { label: "Numerology", href: "/readings/numerology" },
   { label: "Tarot", href: "/readings/tarot" },
   { label: "Vastu", href: "/readings/vastu" },
+  { label: "Kundli matching", href: "/readings/matching" },
   { label: "Pricing", href: "/pricing" },
 ];
 const OUR_SERVICES = [

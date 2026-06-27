@@ -97,10 +97,54 @@ export interface VastuData {
   zones: VastuZoneData[];
 }
 
+export interface PersonInput {
+  name: string;
+  birth_date: string;
+  birth_time: string;
+  latitude: number;
+  longitude: number;
+  timezone: string;
+}
+
+export interface MatchingInput {
+  person_a: PersonInput;
+  person_b: PersonInput;
+  language: string;
+}
+
+export interface KootaData {
+  name: string;
+  max_points: number;
+  score: number;
+  note: string;
+}
+
+export interface MangalDoshaData {
+  person_a_dosha: boolean;
+  person_b_dosha: boolean;
+  person_a_mars_house: number;
+  person_b_mars_house: number;
+  cancelled: boolean;
+  cancellation_reason: string | null;
+}
+
+export interface MatchingData {
+  person_a_name: string;
+  person_b_name: string;
+  total_score: number;
+  max_score: number;
+  verdict: string;
+  kootas: KootaData[];
+  nadi_dosha: boolean;
+  bhakoot_dosha: boolean;
+  mangal_dosha: MangalDoshaData;
+}
+
 export const api = {
   vedicReading: (input: BirthInput) => post<VedicData>("/readings/vedic", input),
   numerologyReading: (input: BirthInput) => post<NumerologyData>("/readings/numerology", input),
   tarotReading: (input: { name: string; language: string }) =>
     post<TarotData>("/readings/tarot", input),
   vastuReading: (input: VastuInput) => post<VastuData>("/readings/vastu", input),
+  matchingReading: (input: MatchingInput) => post<MatchingData>("/readings/matching", input),
 };
