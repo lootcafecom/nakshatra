@@ -7,6 +7,9 @@ const QUICK_LINKS = [
   { label: "Tarot", href: "/readings/tarot" },
   { label: "Vastu", href: "/readings/vastu" },
   { label: "Kundli matching", href: "/readings/matching" },
+  { label: "Daily Panchang", href: "/readings/panchang" },
+  { label: "Muhurta", href: "/readings/muhurta" },
+  { label: "Remedies & gemstones", href: "/readings/remedy" },
   { label: "Pricing", href: "/pricing" },
 ];
 const OUR_SERVICES = [

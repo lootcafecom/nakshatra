@@ -22,6 +22,28 @@ end-to-end, not a mockup.
   and NOAA — see backend README).
 - **Mandatory language selector** on every reading — 9 languages,
   Sanskrit terms preserved regardless of language chosen.
+- **Sign in / sign up** (`/account`) — email + password, JWT session
+  stored in localStorage. The nav bar's "Sign In" button shows the
+  signed-in user's name once authenticated.
+- **Saved birth profiles** (`/profiles`) — save yourself and up to 4
+  family members once; every reading made while signed in automatically
+  saves to that user's history on the backend.
+- **Kundli matching** (`/readings/matching`) — two-person Ashtakoot
+  Guna Milan with full koota breakdown, dosha indicators, and AI
+  interpretation.
+- **Daily Panchang** (`/readings/panchang`) — Tithi, Vaar, Nakshatra,
+  Yoga, Karana, sunrise/sunset, and Rahu Kaal. Personalized automatically
+  to your saved profile's location when signed in, or enter a city
+  manually otherwise.
+- **Muhurta** (`/readings/muhurta`) — describe what you're planning in
+  plain language (e.g. "starting a new business"); it's matched to one
+  of 6 classical activity rule sets automatically. Either check a
+  specific date you have in mind, or search a date range (up to a year)
+  for the best-ranked candidates.
+- **Remedies & gemstones** (`/readings/remedy`) — gemstone, mantra, and
+  charity remedies for whichever planets are actually flagged in your
+  calculated chart (debilitated, in a difficult house, or a shadow
+  planet per Navagraha tradition) — not a generic list.
 
 ## Running it locally
 
@@ -66,12 +88,15 @@ frontend/
   src/
     app/
       page.tsx                          — AstroLuxe home page
-      readings/{vedic,numerology,tarot,vastu}/page.tsx  — connected reading pages
+      account/page.tsx                  — sign in / sign up
+      profiles/page.tsx                 — saved birth profile management
+      readings/{vedic,numerology,tarot,vastu,matching}/page.tsx
       pricing/page.tsx
     components/                         — all UI pieces (nav, hero, cards, etc.)
     lib/
       api.ts             — typed client for the backend
-      cities.ts           — known-city coordinate lookup for the birth form
+      auth.tsx             — auth context provider (signup/login/session)
+      cities.ts             — known-city coordinate lookup for the birth form
       languages.ts, zodiac.ts
 ```
 

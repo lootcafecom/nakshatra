@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@/lib/auth";
 
 const NAV_LINKS = [
   { href: "/", label: "Home" },
@@ -10,11 +11,15 @@ const NAV_LINKS = [
   { href: "/readings/tarot", label: "Tarot" },
   { href: "/readings/vastu", label: "Vastu" },
   { href: "/readings/matching", label: "Matching" },
+  { href: "/readings/panchang", label: "Panchang" },
+  { href: "/readings/muhurta", label: "Muhurta" },
+  { href: "/readings/remedy", label: "Remedies" },
   { href: "/pricing", label: "Pricing" },
 ];
 
 export default function NavBar() {
   const pathname = usePathname();
+  const { user, loading } = useAuth();
 
   return (
     <header
@@ -85,16 +90,16 @@ export default function NavBar() {
             <line x1="10.3" y1="10.3" x2="14" y2="14" stroke="currentColor" strokeWidth="1.3" strokeLinecap="round" />
           </svg>
         </button>
-        <button
-          type="button"
+        <Link
+          href="/account"
           className="ch-btn-primary flex items-center gap-2 text-[13px] px-4 py-2"
         >
-          Sign In
+          {loading ? "…" : user ? user.email.split("@")[0] : "Sign In"}
           <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
             <circle cx="7" cy="4.6" r="2.4" stroke="white" strokeWidth="1.2" />
             <path d="M2.2 12c0-2.6 2.1-4.2 4.8-4.2s4.8 1.6 4.8 4.2" stroke="white" strokeWidth="1.2" />
           </svg>
-        </button>
+        </Link>
       </div>
 
       {/* mobile nav: simple horizontal scroll row below the header */}

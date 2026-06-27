@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import StarField from "@/components/StarField";
+import { AuthProvider } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "Nakshatra — Vedic astrology, numerology, tarot, and Vastu",
@@ -18,7 +19,7 @@ export default function RootLayout({
       <body className="antialiased">
         <div className="ch-cosmic-bg" />
         <StarField />
-        {children}
+        <AuthProvider>{children}</AuthProvider>
       </body>
     </html>
   );
